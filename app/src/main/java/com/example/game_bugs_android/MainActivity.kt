@@ -20,6 +20,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
 import com.example.game_bugs_android.ui.theme.Game_bugs_androidTheme
+import androidx.compose.material3.ExposedDropdownMenuDefaults
+
 
 // Структура данных игрока
 data class PlayerData(
@@ -59,8 +61,8 @@ fun RegistrationForm(modifier: Modifier = Modifier) {
     var expanded by remember { mutableStateOf(false) }
     var showCalendar by remember { mutableStateOf(false) }
 
-    val genderOptions = listOf("Мужской", "Женский")
-    val courses = listOf("1 курс", "2 курс", "3 курс", "4 курс")
+    val genderOptions = listOf("Мужской", "Женский", "Существо")
+    val courses = listOf("1 курс", "2 курс", "3 курс", "4 курс", "ОТЧИСЛЕН")
 
     Column(
         modifier = modifier
@@ -105,22 +107,29 @@ fun RegistrationForm(modifier: Modifier = Modifier) {
 
         // Курс
         Text("Курс:", fontWeight = FontWeight.Medium)
-        ExposedDropdownMenuBox(
-            expanded = expanded,
-            onExpandedChange = { expanded = !expanded }
-        ) {
-            OutlinedTextField(
-                readOnly = true,
-                value = selectedCourse,
-                onValueChange = { },
-                label = { Text("Выберите курс") },
-                trailingIcon = {
-                    ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded)
-                },
-                modifier = Modifier
-                    .fillMaxWidth()
-            )
-            ExposedDropdownMenu(
+        Box {
+            OutlinedButton(
+                onClick = { expanded = !expanded },
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(selectedCourse)
+                    Icon(
+                        painter = painterResource(
+                            if (expanded) android.R.drawable.arrow_up_float
+                            else android.R.drawable.arrow_down_float
+                        ),
+                        contentDescription = null,
+                        modifier = Modifier.size(16.dp)
+                    )
+                }
+            }
+
+            DropdownMenu(
                 expanded = expanded,
                 onDismissRequest = { expanded = false }
             ) {
@@ -140,8 +149,8 @@ fun RegistrationForm(modifier: Modifier = Modifier) {
         Slider(
             value = difficultyLevel,
             onValueChange = { difficultyLevel = it },
-            valueRange = 1f..5f,
-            steps = 3,
+            valueRange = 0f..2f,
+            steps = 1,
             modifier = Modifier.fillMaxWidth()
         )
 
@@ -179,10 +188,16 @@ fun RegistrationForm(modifier: Modifier = Modifier) {
         // Знак зодиака
         if (zodiacSign.isNotEmpty()) {
             Text("Знак зодиака:", fontWeight = FontWeight.Medium)
+
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier.fillMaxWidth()
             ) {
+                Image(
+                    painter = painterResource(id = R.drawable.photo),
+                    contentDescription = "Знак зодиака",
+                    modifier = Modifier.size(64.dp)
+                )
                 Text(
                     text = zodiacSign,
                     fontSize = 18.sp,
