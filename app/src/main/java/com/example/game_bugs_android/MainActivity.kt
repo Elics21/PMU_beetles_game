@@ -4,13 +4,15 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.game_bugs_android.ui.theme.Game_bugs_androidTheme
 
 class MainActivity : ComponentActivity() {
@@ -20,10 +22,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             Game_bugs_androidTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
+                    RegistrationForm(modifier = Modifier.padding(innerPadding))
                 }
             }
         }
@@ -31,17 +30,19 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
+fun RegistrationForm(modifier: Modifier = Modifier) {
+    Column(
         modifier = modifier
-    )
-}
+            .fillMaxSize()
+            .padding(16.dp)
+            .verticalScroll(rememberScrollState()),
+        verticalArrangement = Arrangement.spacedBy(16.dp)
+    ) {
+        Text(
+            text = "Регистрация игрока",
+            fontSize = 24.sp,
+            fontWeight = FontWeight.Bold
+        )
 
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    Game_bugs_androidTheme {
-        Greeting("Android")
     }
 }
